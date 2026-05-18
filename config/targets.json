@@ -1,0 +1,30 @@
+[
+  {
+    "company": "amfori",
+    "domain": "amfori.org",
+    "first_name": "Mathias",
+    "last_name": "Luyten",
+    "role": "Head of Digital"
+  },
+  {
+    "company": "Bureau Veritas",
+    "domain": "bureauveritas.com",
+    "first_name": "Christopher",
+    "last_name": "Wellise",
+    "role": "VP Sustainability"
+  },
+  {
+    "company": "WRAP",
+    "domain": "wrapcompliance.org",
+    "first_name": "Evan",
+    "last_name": "Smith",
+    "role": "VP Partnerships"
+  },
+  {
+    "company": "SGS",
+    "domain": "sgs.com",
+    "first_name": "Suresh",
+    "last_name": "Subramaniam",
+    "role": "Global Head of Digital"
+  }
+]
