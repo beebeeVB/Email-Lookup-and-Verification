@@ -16,22 +16,19 @@ Most email finders guess an address and hope it doesn't bounce. This agent verif
 
 The agent scrapes [email-format.com](https://email-format.com) to find the verified email format for the target domain. For example, `amfori.org` uses `{first}.{last}` — so `Mathias Luyten` becomes `mathias.luyten@amfori.org` and that gets tested first.
 
-If the domain isn't indexed on email-format.com, the agent falls back to 100 permutations ranked by global corporate prevalence, organized across 10 tiers:
+If the domain isn't indexed on email-format.com, the agent switches to an **algorithmic generation engine** that builds all meaningful permutations from name components rather than a fixed list. It combines:
 
-| Tier | Coverage | Examples |
-|---|---|---|
-| 1 | ~85% of corporate domains | `first.last`, `flast`, `first_last`, `firstlast` |
-| 2 | Less common but widely used | `last.first`, `first-last`, `last_first` |
-| 3 | Initial combos | `f_last`, `fi_li`, `lastf`, `last.fi` |
-| 4 | Positional variants | `first.last1`, `flast01`, `firstlast1` |
-| 5 | Dot and dash combos | `f_first_last`, `last_first_fi`, `fi__last` |
-| 6 | Underscore heavy | `first--last`, `fi--last`, `last--fi` |
-| 7 | Truncated first name | `fir.last`, `firs.last`, `lastfir` |
-| 8 | Truncated last name | `firstlas`, `first.las`, `fi.las` |
-| 9 | Numeric collision suffixes | `first.last001`, `flast100`, `firstlast123` |
-| 10 | Regional and edge patterns | `info.flast`, `contact.flast`, `first.last.fi` |
+| Component | Variants |
+|---|---|
+| First name | full, 5, 4, 3, 2 chars, initial |
+| Last name | full, 5, 4, 3, 2 chars, initial |
+| Separators | `.` `_` `-` none |
+| Order | first-last, last-first |
+| Numeric suffixes | none, 1, 2, 01, 001, 99, 100, 123 |
+| Prefixes | none, `info.`, `contact.`, `admin.`, `hello.` |
+| Multi-part | `first.last.initial`, `initial.first.last`, three-way combos |
 
-The agent stops as soon as one candidate comes back confirmed — it doesn't run all 100 if it finds a match early.
+This produces over 2,400 unique candidates per name. The top 1,000 by global prevalence are tested, ordered so the most common real-world formats come first. The agent stops as soon as one comes back confirmed — on most domains it finds the address in the first 5-10 attempts.
 
 ### Step 2 — SMTP Handshake
 
