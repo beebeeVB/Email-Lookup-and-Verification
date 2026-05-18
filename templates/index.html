@@ -6,405 +6,125 @@
 <title>Tamor — Contact Agent</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --border: #222222;
-    --border-active: #333333;
-    --text: #e8e8e8;
-    --muted: #555;
-    --accent: #00ff88;
-    --accent-dim: #00ff8822;
-    --red: #ff4444;
-    --yellow: #ffcc00;
-    --mono: 'IBM Plex Mono', monospace;
-    --sans: 'IBM Plex Sans', sans-serif;
+    --bg: #0a0a0a; --surface: #111111; --border: #222222; --border-active: #333333;
+    --text: #e8e8e8; --muted: #555; --accent: #00ff88; --accent-dim: #00ff8822;
+    --red: #ff4444; --yellow: #ffcc00; --mono: 'IBM Plex Mono', monospace; --sans: 'IBM Plex Sans', sans-serif;
   }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    min-height: 100vh;
-    display: grid;
-    grid-template-rows: auto 1fr;
-  }
-
-  header {
-    border-bottom: 1px solid var(--border);
-    padding: 20px 32px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .logo {
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    color: var(--accent);
-  }
-
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; display: grid; grid-template-rows: auto 1fr; }
+  header { border-bottom: 1px solid var(--border); padding: 20px 32px; display: flex; align-items: center; gap: 16px; }
+  .logo { font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: 0.15em; color: var(--accent); }
   .logo-sep { color: var(--muted); margin: 0 4px; }
-
-  .logo-sub {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-  }
-
-  .main {
-    display: grid;
-    grid-template-columns: 380px 1fr;
-    height: calc(100vh - 61px);
-    overflow: hidden;
-  }
-
-  /* LEFT PANEL */
-  .left {
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  .panel-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .panel-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-
-  .target-count {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--accent);
-  }
-
-  .targets-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: 12px;
-  }
-
+  .logo-sub { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
+  .main { display: grid; grid-template-columns: 400px 1fr; height: calc(100vh - 61px); overflow: hidden; }
+  .left { border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+  .panel-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .panel-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; }
+  .target-count { font-family: var(--mono); font-size: 11px; color: var(--accent); }
+  .targets-list { flex: 1; overflow-y: auto; padding: 12px; }
   .targets-list::-webkit-scrollbar { width: 4px; }
-  .targets-list::-webkit-scrollbar-track { background: transparent; }
   .targets-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  .target-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 12px 14px;
-    margin-bottom: 8px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 8px;
-    align-items: start;
-    transition: border-color 0.15s;
-  }
-
+  .target-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 12px 14px; margin-bottom: 8px; display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; transition: border-color 0.15s; }
   .target-card:hover { border-color: var(--border-active); }
-
-  .target-name {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 2px;
-  }
-
-  .target-meta {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  .btn-remove {
-    background: none;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 16px;
-    line-height: 1;
-    padding: 2px 4px;
-    transition: color 0.15s;
-  }
+  .target-name { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+  .target-meta { font-family: var(--mono); font-size: 10px; color: var(--muted); line-height: 1.6; }
+  .domain-pending { color: var(--yellow); font-style: italic; }
+  .btn-remove { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; padding: 2px 4px; transition: color 0.15s; }
   .btn-remove:hover { color: var(--red); }
 
-  /* ADD FORM */
-  .add-form {
-    border-top: 1px solid var(--border);
-    padding: 16px;
+  /* PASTE BOX */
+  .paste-area { border-top: 1px solid var(--border); padding: 16px; }
+  .paste-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+  .paste-hint { font-family: var(--mono); font-size: 9px; color: #333; margin-bottom: 8px; line-height: 1.8; }
+  textarea {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 3px; color: var(--text); font-family: var(--mono); font-size: 11px;
+    padding: 10px; resize: none; outline: none; transition: border-color 0.15s; line-height: 1.7;
   }
+  textarea::placeholder { color: #333; }
+  textarea:focus { border-color: var(--accent); }
+  .paste-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+  .btn { border-radius: 3px; font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; padding: 9px; cursor: pointer; transition: all 0.15s; border: 1px solid; }
+  .btn-parse { background: transparent; border-color: var(--border-active); color: var(--muted); }
+  .btn-parse:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-clear { background: transparent; border-color: var(--border); color: #333; }
+  .btn-clear:hover { border-color: var(--red); color: var(--red); }
 
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-
-  input {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 8px 10px;
-    width: 100%;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-
-  input::placeholder { color: var(--muted); }
-  input:focus { border-color: var(--accent); }
-
-  .full { grid-column: 1 / -1; }
-
-  .btn-add {
-    width: 100%;
-    background: var(--accent-dim);
-    border: 1px solid var(--accent);
-    border-radius: 3px;
-    color: var(--accent);
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    padding: 9px;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-
-  .btn-add:hover { background: #00ff8833; }
-
-  /* RIGHT PANEL */
-  .right {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  .run-bar {
-    padding: 16px 24px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .btn-run {
-    background: var(--accent);
-    border: none;
-    border-radius: 3px;
-    color: #000;
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    padding: 10px 24px;
-    cursor: pointer;
-    transition: opacity 0.15s;
-  }
-
+  /* RIGHT */
+  .right { display: flex; flex-direction: column; overflow: hidden; }
+  .run-bar { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+  .btn-run { background: var(--accent); border: none; border-radius: 3px; color: #000; font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; padding: 10px 24px; cursor: pointer; transition: opacity 0.15s; }
   .btn-run:disabled { opacity: 0.4; cursor: not-allowed; }
   .btn-run:not(:disabled):hover { opacity: 0.85; }
-
-  .run-status {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-  }
-
+  .run-status { font-family: var(--mono); font-size: 11px; color: var(--muted); }
   .run-status.active { color: var(--yellow); }
-
-  .content-area {
-    flex: 1;
-    display: grid;
-    grid-template-rows: 1fr 200px;
-    overflow: hidden;
-  }
-
-  /* RESULTS */
-  .results-area {
-    overflow-y: auto;
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--border);
-  }
-
+  .content-area { flex: 1; display: grid; grid-template-rows: 1fr 200px; overflow: hidden; }
+  .results-area { overflow-y: auto; padding: 20px 24px; border-bottom: 1px solid var(--border); }
   .results-area::-webkit-scrollbar { width: 4px; }
-  .results-area::-webkit-scrollbar-track { background: transparent; }
   .results-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  .results-empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
-
-  th {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-align: left;
-    padding: 0 12px 12px 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  td {
-    padding: 11px 12px 11px 0;
-    border-bottom: 1px solid var(--border);
-    vertical-align: middle;
-  }
-
+  .results-empty { display: flex; align-items: center; justify-content: center; height: 100%; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0 12px 12px 0; border-bottom: 1px solid var(--border); }
+  td { padding: 11px 12px 11px 0; border-bottom: 1px solid var(--border); vertical-align: middle; }
   .td-name { font-weight: 500; }
-
-  .td-email {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--accent);
-  }
-
+  .td-email { font-family: var(--mono); font-size: 11px; color: var(--accent); }
   .td-email.none { color: var(--muted); }
-
-  .badge {
-    display: inline-block;
-    font-family: var(--mono);
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    padding: 3px 7px;
-    border-radius: 2px;
-  }
-
+  .badge { display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.1em; padding: 3px 7px; border-radius: 2px; }
   .badge-valid { background: #00ff8820; color: var(--accent); border: 1px solid #00ff8840; }
   .badge-catchall { background: #ffcc0015; color: var(--yellow); border: 1px solid #ffcc0030; }
   .badge-failed { background: #ff444415; color: var(--red); border: 1px solid #ff444430; }
-
-  /* LOG */
-  .log-area {
-    background: #070707;
-    overflow-y: auto;
-    padding: 12px 20px;
-  }
-
+  .log-area { background: #070707; overflow-y: auto; padding: 12px 20px; }
   .log-area::-webkit-scrollbar { width: 4px; }
-  .log-area::-webkit-scrollbar-track { background: transparent; }
   .log-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  .log-header {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .log-line {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: #444;
-    line-height: 1.8;
-  }
-
+  .log-header { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+  .log-line { font-family: var(--mono); font-size: 11px; color: #444; line-height: 1.8; }
   .log-line.highlight { color: #888; }
   .log-line.success { color: var(--accent); }
-  .log-line.done { color: var(--muted); }
-
-  .pulse {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: pulse 1s ease-in-out infinite;
-    margin-right: 8px;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
 </style>
 </head>
 <body>
-
 <header>
   <div class="logo">TAMOR <span class="logo-sep">/</span> CONTACT AGENT</div>
   <div class="logo-sub">smtp verification · no api</div>
 </header>
-
 <div class="main">
-
-  <!-- LEFT: targets -->
   <div class="left">
     <div class="panel-header">
       <span class="panel-label">Targets</span>
       <span class="target-count" id="count">0</span>
     </div>
-
     <div class="targets-list" id="targetsList"></div>
 
-    <div class="add-form">
-      <div class="form-grid">
-        <input id="inFirst" placeholder="First name">
-        <input id="inLast" placeholder="Last name">
-        <input id="inCompany" placeholder="Company">
-        <input id="inDomain" placeholder="domain.com">
-        <input id="inRole" placeholder="Role" class="full">
+    <div class="paste-area">
+      <div class="paste-label">Paste Names</div>
+      <div class="paste-hint">
+        one per line · name, company<br>
+        e.g. Mathias Luyten, amfori
       </div>
-      <button class="btn-add" onclick="addTarget()">+ ADD TARGET</button>
+      <textarea id="pasteBox" rows="5" placeholder="Mathias Luyten, amfori&#10;Jane Smith, Bureau Veritas&#10;Evan Smith, WRAP"></textarea>
+      <div class="paste-actions">
+        <button class="btn btn-parse" onclick="parsePaste()">PARSE + ADD</button>
+        <button class="btn btn-clear" onclick="clearAll()">CLEAR ALL</button>
+      </div>
     </div>
   </div>
 
-  <!-- RIGHT: run + results -->
   <div class="right">
     <div class="run-bar">
       <button class="btn-run" id="btnRun" onclick="runAgent()">RUN AGENT</button>
       <span class="run-status" id="runStatus">ready</span>
     </div>
-
     <div class="content-area">
       <div class="results-area" id="resultsArea">
         <div class="results-empty" id="emptyMsg">results will appear here after running</div>
       </div>
-
       <div class="log-area" id="logArea">
         <div class="log-header">log</div>
         <div id="logLines"></div>
       </div>
     </div>
   </div>
-
 </div>
 
 <script>
@@ -420,42 +140,45 @@ async function loadTargets() {
 function renderTargets() {
   const list = document.getElementById("targetsList");
   document.getElementById("count").textContent = targets.length;
-
   if (targets.length === 0) {
-    list.innerHTML = `<div style="font-family:var(--mono);font-size:11px;color:var(--muted);padding:20px;text-align:center">no targets yet</div>`;
+    list.innerHTML = `<div style="font-family:var(--mono);font-size:11px;color:var(--muted);padding:20px;text-align:center">paste names below to add targets</div>`;
     return;
   }
-
   list.innerHTML = targets.map((t, i) => `
     <div class="target-card">
       <div>
         <div class="target-name">${t.first_name} ${t.last_name}</div>
-        <div class="target-meta">${t.role || "—"}<br>${t.domain}</div>
+        <div class="target-meta">
+          ${t.company}<br>
+          <span class="${t.domain ? '' : 'domain-pending'}">${t.domain || 'domain will be looked up automatically'}</span>
+        </div>
       </div>
       <button class="btn-remove" onclick="removeTarget(${i})">×</button>
     </div>
   `).join("");
 }
 
-async function addTarget() {
-  const first = document.getElementById("inFirst").value.trim();
-  const last = document.getElementById("inLast").value.trim();
-  const company = document.getElementById("inCompany").value.trim();
-  const domain = document.getElementById("inDomain").value.trim();
-  const role = document.getElementById("inRole").value.trim();
-
-  if (!first || !last || !domain) return;
-
-  targets.push({ first_name: first, last_name: last, company, domain, role });
-  await saveTargets();
-
-  ["inFirst","inLast","inCompany","inDomain","inRole"].forEach(id => {
-    document.getElementById(id).value = "";
+async function parsePaste() {
+  const text = document.getElementById("pasteBox").value.trim();
+  if (!text) return;
+  const r = await fetch("/api/parse", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text })
   });
+  const parsed = await r.json();
+  targets = [...targets, ...parsed];
+  await saveTargets();
+  document.getElementById("pasteBox").value = "";
 }
 
 async function removeTarget(i) {
   targets.splice(i, 1);
+  await saveTargets();
+}
+
+async function clearAll() {
+  targets = [];
   await saveTargets();
 }
 
@@ -474,8 +197,8 @@ async function runAgent() {
   document.getElementById("runStatus").textContent = "running...";
   document.getElementById("runStatus").className = "run-status active";
   document.getElementById("logLines").innerHTML = "";
-  document.getElementById("emptyMsg") && (document.getElementById("emptyMsg").style.display = "none");
-
+  const em = document.getElementById("emptyMsg");
+  if (em) em.style.display = "none";
   await fetch("/api/run", { method: "POST" });
   polling = setInterval(pollStatus, 1200);
 }
@@ -483,11 +206,8 @@ async function runAgent() {
 async function pollStatus() {
   const r = await fetch("/api/status");
   const data = await r.json();
-
   renderLog(data.log);
-
   if (data.results.length > 0) renderResults(data.results);
-
   if (!data.running) {
     clearInterval(polling);
     document.getElementById("btnRun").disabled = false;
@@ -500,48 +220,34 @@ function renderLog(lines) {
   const container = document.getElementById("logLines");
   container.innerHTML = lines.map(l => {
     let cls = "log-line";
-    if (l.includes("✓")) cls += " success";
-    else if (l.includes("→") || l.includes("trying")) cls += " highlight";
-    else if (l.includes("done")) cls += " done";
+    if (l.includes("confirmed")) cls += " success";
+    else if (l.includes("->") || l.includes("trying")) cls += " highlight";
     return `<div class="${cls}">${l}</div>`;
   }).join("");
-  container.scrollTop = container.scrollHeight;
-  const la = document.getElementById("logArea");
-  la.scrollTop = la.scrollHeight;
+  document.getElementById("logArea").scrollTop = 99999;
 }
 
 function renderResults(results) {
-  const area = document.getElementById("resultsArea");
-  area.innerHTML = `
+  document.getElementById("resultsArea").innerHTML = `
     <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Company</th>
-          <th>Role</th>
-          <th>Email</th>
-          <th>Status</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Name</th><th>Company</th><th>Email</th><th>Status</th></tr></thead>
       <tbody>
         ${results.map(r => `
           <tr>
             <td class="td-name">${r.name}</td>
             <td style="color:var(--muted);font-size:12px">${r.company}</td>
-            <td style="color:var(--muted);font-size:12px">${r.role}</td>
-            <td class="td-email ${r.email === '—' ? 'none' : ''}">${r.email || "—"}</td>
+            <td class="td-email ${!r.email ? 'none' : ''}">${r.email || "—"}</td>
             <td>${badgeFor(r.status)}</td>
           </tr>
         `).join("")}
       </tbody>
-    </table>
-  `;
+    </table>`;
 }
 
-function badgeFor(status) {
-  if (status === "VALID") return `<span class="badge badge-valid">VALID</span>`;
-  if (status === "CATCH_ALL") return `<span class="badge badge-catchall">CATCH ALL</span>`;
-  return `<span class="badge badge-failed">${status}</span>`;
+function badgeFor(s) {
+  if (s === "VALID") return `<span class="badge badge-valid">VALID</span>`;
+  if (s === "CATCH_ALL") return `<span class="badge badge-catchall">CATCH ALL</span>`;
+  return `<span class="badge badge-failed">${s}</span>`;
 }
 
 loadTargets();
